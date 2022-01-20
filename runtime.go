@@ -2,8 +2,13 @@ package errors
 
 import "runtime"
 
-// Max callstack depth to return
-var PcSize = 10
+var (
+	// Max callstack depth to return
+	PcSize = 10
+
+	// 1 for trace(), 1 for err.Trace()
+	CallersToSkip = 2
+)
 
 // Struct containing information about a stackframe
 type Frame struct {
@@ -15,8 +20,7 @@ type Frame struct {
 func trace() []Frame {
 	frames := []Frame{}
 	pc := make([]uintptr, PcSize)
-	skip := 2 // 1 for trace(), 1 for err.Trace()
-	count := runtime.Callers(skip, pc)
+	count := runtime.Callers(CallersToSkip, pc)
 	stack := runtime.CallersFrames(pc[:count])
 
 	for {

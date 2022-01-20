@@ -46,6 +46,15 @@ func (e *Error) Trace(err error) *Error {
 	return e
 }
 
+// Convenience function that wraps `fmt.Errorf`, otherwise behaves the same as `Error.Trace`
+//
+// Should be called when returning an error
+func (e *Error) Tracef(message string, a ...interface{}) *Error {
+	e.Stack = trace()
+	e.Message = fmt.Errorf(message, a...).Error()
+	return e
+}
+
 // Returns everything about the error (name, message, stacktrace, meta)
 func (e *Error) String() string {
 	return serialiseError(e)
