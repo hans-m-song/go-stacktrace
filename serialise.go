@@ -5,10 +5,6 @@ import (
 	"strings"
 )
 
-type stringable interface {
-	String() string
-}
-
 func serialiseMetaMap(meta map[string]string) []string {
 	fragments := []string{}
 	for key, value := range meta {
@@ -19,7 +15,7 @@ func serialiseMetaMap(meta map[string]string) []string {
 	return fragments
 }
 
-func serialiseStackFrames(stack []frame) []string {
+func serialiseStackFrames(stack []Frame) []string {
 	frames := []string{}
 	for _, frame := range stack {
 		line := fmt.Sprintf("%v @ %v:%v", frame.Function, frame.File, frame.Line)
@@ -47,12 +43,4 @@ func serialiseError(err *Error) string {
 	}
 
 	return result
-}
-
-func String(unknown error) string {
-	if err, ok := unknown.(stringable); ok {
-		return err.String()
-	}
-
-	return unknown.Error()
 }

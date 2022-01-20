@@ -2,17 +2,18 @@ package errors
 
 import "runtime"
 
-// max callstack depth to return
+// Max callstack depth to return
 var PcSize = 10
 
-type frame struct {
+// Struct containing information about a stackframe
+type Frame struct {
 	Function string `json:"function"`
 	Line     int    `json:"line"`
 	File     string `json:"file"`
 }
 
-func trace() []frame {
-	frames := []frame{}
+func trace() []Frame {
+	frames := []Frame{}
 	pc := make([]uintptr, PcSize)
 	skip := 2 // 1 for trace(), 1 for err.Trace()
 	count := runtime.Callers(skip, pc)
@@ -22,7 +23,7 @@ func trace() []frame {
 		entry, next := stack.Next()
 
 		if entry.Function != "runtime.goexit" {
-			frames = append(frames, frame{
+			frames = append(frames, Frame{
 				Function: entry.Function,
 				Line:     entry.Line,
 				File:     entry.File,
