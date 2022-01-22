@@ -1,4 +1,4 @@
-package errors
+package trace
 
 import (
 	"fmt"
@@ -85,7 +85,7 @@ func (e *Error) Clone() *Error {
 }
 
 // Create a new instance of `Error` with a name
-func NewError(name string) *Error {
+func New(name string) *Error {
 	return &Error{
 		Name:    name,
 		Message: "",

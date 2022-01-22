@@ -1,4 +1,4 @@
-package errors
+package trace
 
 type clonable interface {
 	Clone() *Error
