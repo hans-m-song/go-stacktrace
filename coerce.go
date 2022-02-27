@@ -1,9 +1,5 @@
 package trace
 
-type clonable interface {
-	Clone() *Error
-}
-
 type stringable interface {
 	String() string
 }
@@ -12,16 +8,13 @@ type stringable interface {
 //
 // If `unknown` is of type `Error`, it returns a clone
 func Guarantee(unknown error) *Error {
-	if err, ok := unknown.(clonable); ok {
-		result := err.Clone()
-		return result
+	if err, ok := unknown.(*Error); ok {
+		return err
 	}
 
 	return &Error{
 		Name:    "UnnamedError",
 		Message: unknown.Error(),
-		Meta:    map[string]string{},
-		Stack:   []Frame{},
 	}
 }
 
