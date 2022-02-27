@@ -5,10 +5,10 @@ import (
 	"strings"
 )
 
-func serialiseMetaMap(meta map[string]string) []string {
+func serialiseMetaMap(meta map[string]interface{}) []string {
 	fragments := []string{}
 	for key, value := range meta {
-		fragment := fmt.Sprintf("%s=\"%s\"", key, value)
+		fragment := fmt.Sprintf("%s=\"%+v\"", key, value)
 		fragments = append(fragments, fragment)
 	}
 

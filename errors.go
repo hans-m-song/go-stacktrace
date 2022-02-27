@@ -12,10 +12,10 @@ var (
 
 // Struct representing an error.
 type Error struct {
-	Name    string            `json:"name"`
-	Message string            `json:"message"`
-	Meta    map[string]string `json:"meta"`
-	Stack   []Frame           `json:"stack"`
+	Name    string                 `json:"name"`
+	Message string                 `json:"message"`
+	Meta    map[string]interface{} `json:"meta"`
+	Stack   []Frame                `json:"stack"`
 }
 
 type SerializableError interface {
@@ -35,7 +35,7 @@ type TraceableError interface {
 
 // Attaches a named value to the metadata of the error.
 //
-// Note: values get casted into string with `fmt.Sprintf("%+v", value)`.
+// Note: values will eventually get casted into string with `fmt.Sprintf("%+v", value)`.
 func (e *Error) Add(key string, value interface{}) *Error {
 	e.Meta[key] = fmt.Sprintf("%+v", value)
 	return e
@@ -92,7 +92,7 @@ func (e *Error) Clone() *Error {
 	clone := Error{
 		Name:    e.Name,
 		Message: e.Message,
-		Meta:    make(map[string]string, len(e.Meta)),
+		Meta:    make(map[string]interface{}, len(e.Meta)),
 	}
 
 	for k, v := range e.Meta {
@@ -123,7 +123,7 @@ func New(name string) *Error {
 	return &Error{
 		Name:    name,
 		Message: "",
-		Meta:    map[string]string{},
+		Meta:    map[string]interface{}{},
 		Stack:   []Frame{},
 	}
 }
