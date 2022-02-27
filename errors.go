@@ -21,6 +21,7 @@ type Error struct {
 type SerializableError interface {
 	GetStack() []string
 	GetMeta() []string
+	String() string
 	Error() string
 }
 
