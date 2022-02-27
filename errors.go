@@ -78,8 +78,7 @@ func (e *Error) Trace(err error) *Error {
 //
 // Should be called when returning an error
 func (e *Error) Tracef(message string, a ...interface{}) *Error {
-	e.Stack = trace()
-	e.Message = fmt.Errorf(message, a...).Error()
+	e.Trace(fmt.Errorf(message, a...))
 	return e
 }
 
