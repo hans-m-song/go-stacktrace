@@ -4,12 +4,31 @@ import (
 	"fmt"
 )
 
+var (
+	// check if Error implements interfaces
+	_ SerializableError = (*Error)(nil)
+	_ TraceableError    = (*Error)(nil)
+)
+
 // Struct representing an error
 type Error struct {
 	Name    string            `json:"name"`
 	Message string            `json:"message"`
 	Meta    map[string]string `json:"meta"`
 	Stack   []Frame           `json:"stack"`
+}
+
+type SerializableError interface {
+	GetStack() []string
+	GetMeta() []string
+	Error() string
+}
+
+type TraceableError interface {
+	Add(key string, value interface{}) *Error
+	Trace(err error) *Error
+	Tracef(message string, a ...interface{}) *Error
+	Clone() *Error
 }
 
 // Attaches a named value to the metadata of the error
