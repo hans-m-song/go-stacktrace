@@ -12,9 +12,16 @@ func Guarantee(unknown error) *Error {
 		return err
 	}
 
+	var message string
+	if unknown == nil {
+		message = "error not provided"
+	} else {
+		message = unknown.Error()
+	}
+
 	return &Error{
 		Name:    "UnnamedError",
-		Message: unknown.Error(),
+		Message: message,
 	}
 }
 
