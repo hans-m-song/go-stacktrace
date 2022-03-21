@@ -6,6 +6,7 @@ import (
 
 var (
 	// check if Error implements interfaces
+	_ error             = (*Error)(nil)
 	_ SerializableError = (*Error)(nil)
 	_ TraceableError    = (*Error)(nil)
 )

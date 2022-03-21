@@ -1,5 +1,7 @@
 package trace
 
+import "encoding/json"
+
 type stringable interface {
 	String() string
 }
@@ -29,6 +31,17 @@ func Guarantee(unknown error) *Error {
 func String(unknown error) string {
 	if err, ok := unknown.(stringable); ok {
 		return err.String()
+	}
+
+	return unknown.Error()
+}
+
+// Attempts to marshal an error, returns default error string if not
+func Json(unknown error) string {
+	err := Guarantee(unknown)
+
+	if serialised, err := json.Marshal(err); err == nil {
+		return string(serialised)
 	}
 
 	return unknown.Error()
